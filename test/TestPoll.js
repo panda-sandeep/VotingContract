@@ -63,4 +63,14 @@ contract('Poll', function(accounts) {
             });
        });
     });
+
+    // onlyOwner Modifier test. It should fail.
+    // Let's try to assign voting rights to `accounts[3]` and make the transaction from `accounts[4]`.
+    it('Only owner can assign voting rights', function(done){
+        Poll.deployed().then(function(instance) {
+            instance.assignVotingRight(accounts[3], {from: accounts[4]}).then(function(){
+                done();
+            });
+       });
+    });
 });

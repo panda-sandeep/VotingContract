@@ -25,6 +25,13 @@ contract Poll {
   mapping (address => Participant) public participants; // Maps an Ethereum address to a Participant Object
   Proposal[] public proposals; // List of proposals
 
+  //  Function Modifier
+  modifier onlyOwner() {
+      require(msg.sender == owner);
+      _;
+  }
+  // =====
+
   // Functions
   // ============
 
@@ -51,7 +58,7 @@ contract Poll {
   }
 
    // Owner of the contract calls this function when they want to give voting rights to someone
-  function assignVotingRight(address voter) public {
+  function assignVotingRight(address voter) public onlyOwner {
         // fetch the particulr `Participant` object from participants mapping 
         // and modify the weight
         Participant storage participant = participants[voter];
