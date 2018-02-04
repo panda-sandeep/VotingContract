@@ -55,6 +55,25 @@ contract('Poll', function(accounts) {
        });
     });
 
+    it('should add one vote to Proposal 1 & emit VoteReceived event', function(done){
+        Poll.deployed().then(function(instance) {
+            instance.vote(1, {from: accounts[1]}).then(function(result){
+                assert.equal(result.logs[0].event, 'VoteReceived', 'The vote was not received');
+                done();
+            });
+       });
+    });
+
+    // Let's add a new proposal and check whether the event was emitted
+    it('should add a proposal & emit ProposalAdded Event', function(done){
+        Poll.deployed().then(function(instance) {
+            instance.addProposal('Proposal 4').then(function(result){
+                assert.equal(result.logs[0].event, 'ProposalAdded', 'The proposal could not be added');
+                done();
+            });
+       });
+    });
+
     it('should find the winning proposal', function(done){
         Poll.deployed().then(function(instance) {
             instance.findWinningProposal().then(function(data){

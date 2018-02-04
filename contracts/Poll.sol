@@ -32,6 +32,11 @@ contract Poll {
   }
   // =====
 
+  // Events
+  event ProposalAdded(address voter, bytes32 name); // When a new proposal is added
+  event VoteReceived(address voter); // When a vote is received
+  // ====
+
   // Functions
   // ============
 
@@ -55,6 +60,8 @@ contract Poll {
             name: proposalName,
             voteCount: 0
       }));
+
+      ProposalAdded(msg.sender, proposalName); // Emit an event
   }
 
    // Owner of the contract calls this function when they want to give voting rights to someone
@@ -71,6 +78,7 @@ contract Poll {
         participant.hasVoted = true; // Change the flag to indicate that the person has voted
         participant.proposalVoted = index; // Store the proposal index
         proposals[index].voteCount++; // Increment vote count
+        VoteReceived(msg.sender); // Emit an event
   }
 
   // Calculates the winning proposal
